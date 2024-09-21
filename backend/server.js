@@ -5,13 +5,13 @@ const connectDB = require('./config/db'); // Import the db connection
 const authRoutes = require('./routes/auth');
 const bodyParser = require('body-parser');
 
-
+const app = express();
 dotenv.config(); // Load env variables
 connectDB(); // Connect to MongoDB
 app.use(cors({
     origin: 'http://localhost:3001' // Allow only your frontend origin
   }));
-const app = express();
+
 app.use(bodyParser.json());
 
 app.use('/api/auth', authRoutes); // Include auth routes
