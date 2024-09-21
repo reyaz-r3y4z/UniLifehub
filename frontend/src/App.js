@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Dashboard from './components/Dashboard';
 import StudyPlanner from './components/StudyPlanner';
@@ -9,9 +9,10 @@ import CampusEats from './components/CampusEats';
 import FitU from './components/FitU';
 import OpenForum from './components/OpenForum';
 import Login from './components/Login';
-import Signup from './components/Signup';   // Import Signup
-import Profile from './components/Profile'; // Import Profile
-import Footer from './components/Footer';  // Import Footer
+import Signup from './components/Signup';
+import ProfileCreation from './components/ProfileCreation';
+import Profile from './components/Profile';
+import Footer from './components/Footer';
 
 const AppContainer = styled.div`
   font-family: 'Roboto', sans-serif;
@@ -54,36 +55,44 @@ function App() {
     <Router>
       <AppContainer>
         <Routes>
+          {/* Redirect the root path to the login page */}
+          <Route path="/" element={<Navigate to="/login" />} />
+
+          {/* Routes for Login and Signup (without the ContentContainer) */}
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />  {/* Add Signup route */}
-          <Route path="/profile" element={<Profile />} /> {/* Add Profile route */}
-          <Route path="/*" element={
-            <>
-              <Nav>
-                <NavLink to="/">Dashboard</NavLink>
-                <NavLink to="/study-planner">Study Planner</NavLink>
-                <NavLink to="/campus-resources">Campus Resources</NavLink>
-                <NavLink to="/study-buddy">Study Buddy</NavLink>
-                <NavLink to="/campus-eats">Campus Eats</NavLink>
-                <NavLink to="/fit-u">FitU</NavLink>
-                <NavLink to="/open-forum">Open Forum</NavLink>
-                <NavLink to="/login">Login</NavLink>         {/* Login link */}
-                <NavLink to="/signup">Signup</NavLink>       {/* Signup link */}
-                <NavLink to="/profile">Profile</NavLink>     {/* Profile link */}
-              </Nav>
-              <ContentContainer>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/study-planner" element={<StudyPlanner />} />
-                  <Route path="/campus-resources" element={<CampusResources />} />
-                  <Route path="/study-buddy" element={<StudyBuddy />} />
-                  <Route path="/campus-eats" element={<CampusEats />} />
-                  <Route path="/fit-u" element={<FitU />} />
-                  <Route path="/open-forum" element={<OpenForum />} />
-                </Routes>
-              </ContentContainer>
-            </>
-          } />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profile-creation" element={<ProfileCreation />} />
+
+          {/* Routes that require ContentContainer */}
+          <Route
+            path="*"
+            element={
+              <>
+                <Nav>
+                  <NavLink to="/dashboard">Dashboard</NavLink>
+                  <NavLink to="/study-planner">Study Planner</NavLink>
+                  <NavLink to="/campus-resources">Campus Resources</NavLink>
+                  <NavLink to="/study-buddy">Study Buddy</NavLink>
+                  <NavLink to="/campus-eats">Campus Eats</NavLink>
+                  <NavLink to="/fit-u">FitU</NavLink>
+                  <NavLink to="/open-forum">Open Forum</NavLink>
+                  <NavLink to="/profile">Profile</NavLink>
+                </Nav>
+                <ContentContainer>
+                  <Routes>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/study-planner" element={<StudyPlanner />} />
+                    <Route path="/campus-resources" element={<CampusResources />} />
+                    <Route path="/study-buddy" element={<StudyBuddy />} />
+                    <Route path="/campus-eats" element={<CampusEats />} />
+                    <Route path="/fit-u" element={<FitU />} />
+                    <Route path="/open-forum" element={<OpenForum />} />
+                    <Route path="/profile" element={<Profile />} />
+                  </Routes>
+                </ContentContainer>
+              </>
+            }
+          />
         </Routes>
         <Footer /> {/* Include the Footer */}
       </AppContainer>

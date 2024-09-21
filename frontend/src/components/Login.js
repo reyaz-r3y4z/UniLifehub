@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -34,15 +34,34 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const SignUpLink = styled.p`
+  text-align: center;
+  margin-top: 10px;
+
+  a {
+    color: #1a237e;
+    text-decoration: none;
+    font-weight: 600;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
 function Login() {
-  const [username, setUsername] = useState('');
+  const [studentId, setStudentId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, we'll just navigate to the dashboard regardless of the input
-    navigate('/');
+    // Logic to handle login validation (for now, just navigate to dashboard)
+    if (studentId === password) {
+      navigate('/dashboard'); // Redirect to dashboard or home page after successful login
+    } else {
+      alert('Login failed! Make sure your Student ID matches the password.');
+    }
   };
 
   return (
@@ -51,9 +70,9 @@ function Login() {
         <h2>Login</h2>
         <Input 
           type="text" 
-          value={username} 
-          onChange={(e) => setUsername(e.target.value)} 
-          placeholder="Username"
+          value={studentId} 
+          onChange={(e) => setStudentId(e.target.value)} 
+          placeholder="Student ID"
           required
         />
         <Input 
@@ -64,6 +83,11 @@ function Login() {
           required
         />
         <Button type="submit">Login</Button>
+
+        {/* Sign up link that redirects to Sign Up page */}
+        <SignUpLink>
+          Don't have an account? <Link to="/signup">Sign up here</Link>
+        </SignUpLink>
       </Form>
     </Container>
   );
