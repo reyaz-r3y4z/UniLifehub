@@ -14,7 +14,7 @@
 
 - **Frontend**: Built with **React** for a fast and responsive user experience. React allows dynamic interactions and real-time updates on the platform.
 - **Backend**: Developed using **Node.js** for server-side logic, APIs, and managing user sessions, ensuring a robust, scalable backend.
-- **Database**: (Optional) Although this version of the app currently stores data in-memory, future updates will integrate a persistent database (e.g., MongoDB or PostgreSQL).
+- **Database**: Although this version of the app currently stores data in-memory, future updates will integrate a persistent database MongoDB.
 
 ## Getting Started
 
