@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import styled from 'styled-components';
 
 const StyledForm = styled.form`
@@ -65,7 +64,18 @@ const StyledForm = styled.form`
       padding: 0.5rem;
     }
   }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 `;
+
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -92,49 +102,56 @@ const SignUpForm = () => {
     groupProjectExperience: '',
     willingnessToMentor: ''
   });
- 
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('signUpFormData');
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
+    const updatedFormData = {
+      ...formData,
       [name]: value
-    }));
+    };
+    setFormData(updatedFormData);
+    localStorage.setItem('signUpFormData', JSON.stringify(updatedFormData));
   };
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/signup', formData);
       console.log('Sign up successful', response.data);
+      localStorage.removeItem('signUpFormData');
       // Handle successful signup (e.g., redirect, show success message)
     } catch (error) {
       console.error('Sign up failed', error);
       // Handle error (e.g., show error message)
     }
   };
- 
+
   return (
     <StyledForm onSubmit={handleSubmit}>
-    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Student Sign Up</h2>
- 
-      <section className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Personal Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2>Student Sign Up</h2>
+
+      <section>
+        <h3>Personal Information</h3>
+        <div className="grid">
           <input
             type="text"
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
             placeholder="Full Name"
-            className="w-full p-2 border rounded"
             required
           />
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
             required
           >
             <option value="">Select Gender</option>
@@ -148,14 +165,12 @@ const SignUpForm = () => {
             value={formData.nationality}
             onChange={handleChange}
             placeholder="Nationality"
-            className="w-full p-2 border rounded"
             required
           />
           <select
             name="ageGroup"
             value={formData.ageGroup}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
           >
             <option value="">Select Age Group (Optional)</option>
             <option value="18-22">18-22</option>
@@ -165,16 +180,13 @@ const SignUpForm = () => {
         </div>
       </section>
 
-
- 
-<section className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Academic Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <section>
+        <h3>Academic Information</h3>
+        <div className="grid">
           <select
             name="course"
             value={formData.course}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
             required
           >
             <option value="">Select Course</option>
@@ -187,7 +199,6 @@ const SignUpForm = () => {
             value={formData.academicLevel}
             onChange={handleChange}
             placeholder="Semester/Academic Level"
-            className="w-full p-2 border rounded"
             required
           />
           <input
@@ -196,14 +207,12 @@ const SignUpForm = () => {
             value={formData.subjectsEnrolled}
             onChange={handleChange}
             placeholder="Subjects Enrolled"
-            className="w-full p-2 border rounded"
             required
           />
           <select
             name="studyPreference"
             value={formData.studyPreference}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
             required
           >
             <option value="">Study Preference</option>
@@ -215,21 +224,19 @@ const SignUpForm = () => {
             value={formData.availability}
             onChange={handleChange}
             placeholder="Availability for the Week"
-            className="w-full p-2 border rounded"
             rows="3"
             required
           ></textarea>
         </div>
       </section>
- 
-      <section className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Personality and Study Habits</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <section>
+        <h3>Personality and Study Habits</h3>
+        <div className="grid">
           <select
             name="learningStyle"
             value={formData.learningStyle}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
             required
           >
             <option value="">Learning Style</option>
@@ -244,7 +251,6 @@ const SignUpForm = () => {
             value={formData.motivationalFactors}
             onChange={handleChange}
             placeholder="Motivational Factors"
-            className="w-full p-2 border rounded"
             required
           />
           <input
@@ -253,7 +259,6 @@ const SignUpForm = () => {
             value={formData.studyEnvironment}
             onChange={handleChange}
             placeholder="Preferred Study Environment"
-            className="w-full p-2 border rounded"
             required
           />
           <textarea
@@ -261,23 +266,21 @@ const SignUpForm = () => {
             value={formData.academicSkills}
             onChange={handleChange}
             placeholder="Strengths and Weaknesses in Academic Skills"
-            className="w-full p-2 border rounded"
             rows="3"
             required
           ></textarea>
         </div>
       </section>
- 
-      <section className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Interests and Hobbies</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <section>
+        <h3>Interests and Hobbies</h3>
+        <div className="grid">
           <input
             type="text"
             name="hobbies"
             value={formData.hobbies}
             onChange={handleChange}
             placeholder="Hobbies"
-            className="w-full p-2 border rounded"
             required
           />
           <input
@@ -286,7 +289,6 @@ const SignUpForm = () => {
             value={formData.interests}
             onChange={handleChange}
             placeholder="Interests Outside of Academics"
-            className="w-full p-2 border rounded"
             required
           />
           <input
@@ -295,22 +297,20 @@ const SignUpForm = () => {
             value={formData.careerAspirations}
             onChange={handleChange}
             placeholder="Future Career Aspirations"
-            className="w-full p-2 border rounded"
             required
           />
         </div>
       </section>
- 
-      <section className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Technical/Work Preferences</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <section>
+        <h3>Technical/Work Preferences</h3>
+        <div className="grid">
           <input
             type="text"
             name="communicationChannels"
             value={formData.communicationChannels}
             onChange={handleChange}
             placeholder="Preferred Communication Channels"
-            className="w-full p-2 border rounded"
             required
           />
           <input
@@ -319,14 +319,12 @@ const SignUpForm = () => {
             value={formData.toolsProficiency}
             onChange={handleChange}
             placeholder="Proficiency in Tools/Technologies"
-            className="w-full p-2 border rounded"
             required
           />
           <select
             name="locationPreference"
             value={formData.locationPreference}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
             required
           >
             <option value="">Location Preference</option>
@@ -339,29 +337,26 @@ const SignUpForm = () => {
             value={formData.languagesSpoken}
             onChange={handleChange}
             placeholder="Languages Spoken"
-            className="w-full p-2 border rounded"
             required
           />
         </div>
       </section>
- 
-      <section className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Social and Team Preferences</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <section>
+        <h3>Social and Team Preferences</h3>
+        <div className="grid">
           <input
             type="text"
             name="studyPartnerPreference"
             value={formData.studyPartnerPreference}
             onChange={handleChange}
             placeholder="Preferred Study Partner Personality"
-            className="w-full p-2 border rounded"
             required
           />
           <select
             name="groupProjectExperience"
             value={formData.groupProjectExperience}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
           >
             <option value="">Past Group Project Experience</option>
             <option value="yes">Yes</option>
@@ -371,7 +366,6 @@ const SignUpForm = () => {
             name="willingnessToMentor"
             value={formData.willingnessToMentor}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
           >
             <option value="">Willingness to Mentor Others</option>
             <option value="yes">Yes</option>
@@ -379,18 +373,10 @@ const SignUpForm = () => {
           </select>
         </div>
       </section>
- 
-      <button
-        type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-      >
-        Sign Up
-      </button>
-    </form>
+
+      <button type="submit">Sign Up</button>
     </StyledForm>
   );
-
 };
- 
+
 export default SignUpForm;
- 
