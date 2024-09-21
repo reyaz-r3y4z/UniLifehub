@@ -3,7 +3,7 @@ The idea for **UniLifeHub** hit us like a caffeine-fueled epiphany during exam s
 
 That’s when it clicked—students don’t just need another info dump. We needed a place to vibe! Somewhere to find people who not only understand your academic grind but are also down to procrastinate just the right amount before diving into the study sesh. Enter UniLifeHub: the brainchild of our combined epiphanies—a magical land where productivity and humor go hand-in-hand. You can thrive by connecting with others who match your wavelength, your memes, and yes, your love of pushing deadlines just a tad too far. 🏄‍♀️
 
-## What it does
+## What **UniLifehub** does
 It’s like Tinder, but instead of awkward dates, you’re selecting for study buddies and shared existential crises. Whether you’re looking for someone to join your “I’ll definitely study tomorrow” club or just a partner-in-crime for group projects (ugh), UniLifeHub is the go-to. 🎉
 
 ## How we built it
